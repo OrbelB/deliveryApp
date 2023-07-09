@@ -1,20 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NativeWindStyleSheet } from 'nativewind';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import 'react-native-url-polyfill/auto'
+// import RestaurantScreen from './screens/RestaurantScreen';
+import RestaurantScreen from './screens/RestaurantScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  // NativeWindStyleSheet.setOutput({
+  //   web: 'css',
+  //   default: 'native'
+  // })
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      {/* restaurant screen */}
+      {/* the names are important because that allows us to move to diffrent screens */}
+      <Stack.Screen name="Restaurant" component={RestaurantScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
