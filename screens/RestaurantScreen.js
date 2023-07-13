@@ -1,9 +1,11 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 import { urlFor } from '../sanity';
-import { ArrowLeftCircleIcon, ArrowLeftIcon, MapPinIcon, QuestionMarkCircleIcon, StarIcon } from 'react-native-heroicons/solid';
+import { ArrowLeftCircleIcon, ArrowLeftIcon, ChevronDoubleRightIcon, MapPinIcon, QuestionMarkCircleIcon, StarIcon } from 'react-native-heroicons/solid';
+import { ChevronRightIcon } from 'react-native-heroicons/outline';
+import DishRow from '../components/DishRow';
 
 const RestaurantScreen = () => {
 
@@ -38,7 +40,8 @@ const RestaurantScreen = () => {
             headerTintColor: 'black',
         })
     }, [navigation, title]);
-  return (
+    console.log(dishes[0].image)
+return (
     // <SafeAreaView>
         <ScrollView 
         >
@@ -82,13 +85,34 @@ const RestaurantScreen = () => {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity>
-                    <QuestionMarkCircleIcon/>
+                <TouchableOpacity className="flex-row items-center space-x-2 p-4 border-y">
+                    <QuestionMarkCircleIcon color={'gray' }/>
+                    <Text className="pl-2 flex-1 text-md front-bold">
+                        Resturant Food&Safty Grade 
+                    </Text>
+                    <ChevronRightIcon/>
                 </TouchableOpacity>
             </View>
+
+            <View>
+                <Text className="px-4 pt-6 font-bold text-xl">Menu</Text>
+                {/* Dish Rows */}
+                {dishes.map(dish => (
+                    <DishRow
+                        key={dish._id}
+                        id={dish._id}
+                        name={dish.name}
+                        desc={dish.description}
+                        price={dish.price}
+                        waitTime={dish.waitTime}
+                        image={dish.image}
+                    />
+                ))}
+                
+            </View>
+
         </ScrollView>
     // </SafeAreaView>
-  )
-}
+)}
 
 export default RestaurantScreen
