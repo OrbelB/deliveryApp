@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { formatCurrency, getSupportedCurrencies } from "react-native-format-currency";
 import { urlFor } from '../sanity';
 import { MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem, removeItem, selectBasketItems, selectBasketItemsWithid } from '../slices/basketSlice';
 
 
 const DishRow = ({
@@ -17,7 +19,27 @@ const DishRow = ({
     if(!desc){
         desc = name + " dish wonderfully cooked by us"
     }
+    //state is a call back function
+    const items = useSelector((state) => selectBasketItemsWithid(state,id));
     const [isPressed, setIsPressed] = useState(false);
+
+    // gives the abilities to fire off actions
+    const dispatch = useDispatch();
+
+    // redux stuff 
+    const addItemsToBasket = () => {
+        dispatch(addItem({id, name, desc, price, image, waitTime}))
+    };
+
+    const removeItemFromBasket = () => {
+        if(!items.length > 0) {
+            // console.log("no items to remove")
+            return;
+        }
+        dispatch(removeItem({id}))
+    }
+
+
 return (
     <>
         <TouchableOpacity onPress={() => setIsPressed(!isPressed)} 
@@ -41,16 +63,19 @@ return (
     {isPressed && (
         <View>
             <View className="flex-row items-center space-x-2 pb-3s bg-green-100">
-                <TouchableOpacity>
+                <TouchableOpacity 
+                onPress={removeItemFromBasket}
+                disabled={items.length == 0}
+                >
                     <MinusCircleIcon
-                    // color={items.length > 0 ? "#00CCBB" : "red"}
+                    color={items.length > 0 ? "red" : "grey"}
                     size={40}/>
                 </TouchableOpacity>
                 {/* Items counter */}
-                <Text>0</Text>
-                <TouchableOpacity>
+                <Text>{items.length}</Text>
+                <TouchableOpacity onPress={addItemsToBasket}>
                     <PlusCircleIcon
-                    // color={items.length > 0 ? "#00CCBB" : "red"}
+                    color={items.length > 0 ? "#00CCBB" : "green"}
                     size={40}/>
                 </TouchableOpacity>
 
@@ -61,5 +86,3 @@ return (
 )}
 
 export default DishRow
-
-// 2:25
