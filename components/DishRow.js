@@ -43,7 +43,7 @@ const DishRow = ({
 return (
     <>
         <TouchableOpacity onPress={() => setIsPressed(!isPressed)} 
-            className={`bg-white border p-4 border-gray-200 ${isPressed && "border-b-0 bg-green-100"}`} >
+            className={`bg-white border p-4 border-gray-200 ${isPressed && "border-b-0 bg-gray-100"}`} >
         <View className="flex-row">
             <View className="flex-1 pr-2">
                 <Text className='text-lg mb-1'>{name}</Text>
@@ -62,7 +62,7 @@ return (
     </TouchableOpacity>
     {isPressed && (
         <View>
-            <View className="flex-row items-center space-x-2 pb-3s bg-green-100">
+            <View className={`flex-row items-center space-x-2 pb-1  pt-1 pl-2 bg-gray-100 ${items.length>0 && "bg-green-100"}`}>
                 <TouchableOpacity 
                 onPress={removeItemFromBasket}
                 disabled={items.length == 0}

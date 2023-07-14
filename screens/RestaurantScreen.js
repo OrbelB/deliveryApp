@@ -6,10 +6,15 @@ import { urlFor } from '../sanity';
 import { ArrowLeftCircleIcon, ArrowLeftIcon, ChevronDoubleRightIcon, MapPinIcon, QuestionMarkCircleIcon, StarIcon } from 'react-native-heroicons/solid';
 import { ChevronRightIcon } from 'react-native-heroicons/outline';
 import DishRow from '../components/DishRow';
+import BasketIcon from '../components/BasketIcon';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setRestaurant } from '../slices/restaurantSlice';
 
 const RestaurantScreen = () => {
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     // pull the arguments you passed along use root
     // const route = useRoute();
     // can do route.params.title ...
@@ -29,6 +34,19 @@ const RestaurantScreen = () => {
         },
     } = useRoute();
 
+    useEffect(() => {
+        dispatch(setRestaurant({
+            id,
+            imgUrl,
+            title,
+            price,
+            genre,
+            address,
+            shortDesc,
+            dishes,
+        }))
+    }, [dispatch])
+
     // Idea here would be to have diffrent colors representing if the resturant is open / closed, special deals graphic, etc
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,9 +58,10 @@ const RestaurantScreen = () => {
             headerTintColor: 'black',
         })
     }, [navigation, title]);
-    console.log(dishes[0].image)
+    // console.log(dishes[0].image)
 return (
-    // <SafeAreaView>
+    <>
+    <BasketIcon/>
         <ScrollView 
         >
             <View className="relative">
@@ -94,7 +113,7 @@ return (
                 </TouchableOpacity>
             </View>
 
-            <View>
+            <View className='pb-32'>
                 <Text className="px-4 pt-6 font-bold text-xl">Menu</Text>
                 {/* Dish Rows */}
                 {dishes.map(dish => (
@@ -112,7 +131,7 @@ return (
             </View>
 
         </ScrollView>
-    // </SafeAreaView>
+    </>
 )}
 
 export default RestaurantScreen

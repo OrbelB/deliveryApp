@@ -30,7 +30,9 @@ export const { addItem, removeItem } = basketSlice.actions
 // allows you to access the global state
 export const selectBasketItems = (state) => state.basket.items;
 
-export const selectBasketItemsWithid = (state, id) => state.basket.items.filter((items) => items.id === id) 
+export const selectBasketItemsWithid = (state, id) => state.basket.items.filter((items) => items.id === id);
+
+export const selectBasketTotal = (state) => state.basket.items.reduce((total, items) => total+=items.price, 0);
 
 export default basketSlice.reducer
 
