@@ -16,3 +16,6 @@ This is a quick project implementing a delivery app to learn about app developme
 
 
 ## Video Demo 
+
+https://github.com/OrbelB/deliveryApp/assets/98566559/00541405-0b34-412d-a671-463d76f4934c
+
