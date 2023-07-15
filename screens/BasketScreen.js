@@ -3,13 +3,14 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRestaurant } from '../slices/restaurantSlice';
-import { selectBasketItems } from '../slices/basketSlice';
+import { selectBasketItems, selectBasketTotal } from '../slices/basketSlice';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { XCircleIcon } from 'react-native-heroicons/outline';
 import { urlFor } from '../sanity';
 import { CurrencyDollarIcon } from 'react-native-heroicons/solid';
 import { removeItem } from '../slices/basketSlice';
+import PreparingOrderScreen from './PreparingOrderScreen';
 
 const BasketScreen = () => {
 
@@ -18,8 +19,11 @@ const BasketScreen = () => {
     const items = useSelector(selectBasketItems);
     const [groupItemsInBasket, setgroupItemsInBasket] = useState([])
     const dispatch = useDispatch();
-    console.log(restaurant)
-
+    const basketTotal = useSelector(selectBasketTotal);
+    // console.log(restaurant)
+    const salesTax = (basketTotal* .1025).toFixed(2);
+    const deliveryFee = (basketTotal*.25).toFixed(2);
+    const total = ( parseFloat(basketTotal) + parseFloat(deliveryFee) + parseFloat(salesTax)).toFixed(2)
 
 
     // Optimization, if the value of items does not change it wont recompute the value
@@ -86,9 +90,32 @@ return (
                         </TouchableOpacity>
                     </View>
                 ))}
+                {/* Subtotal */}
             </ScrollView>
-            <View>
-                <Text>3:12</Text>
+            <View className='p-5 bg-white mt-5 space-y-4'>
+                <View className='flex-row justify-between'>
+                    <Text className='font-bold' >Subtotal</Text>
+                    <Text className='font-extrabold'>$ {(basketTotal).toFixed(2)}</Text>
+                    
+                </View>
+                <View className='flex-row justify-between'>
+                    <Text className='font-bold' >Delivery fee</Text>
+                    <Text className='font-extrabold'>$ {deliveryFee}</Text>                    
+                </View>
+                <View className='flex-row justify-between'>
+                    <Text className='font-bold' >Tax</Text>
+                    <Text className='font-extrabold'>$ {salesTax}</Text>                    
+                </View>
+                <View className='flex-row justify-between'>
+                    <Text className='font-bold' >Total</Text>
+                    <Text className='font-extrabold'>$ {(total)}</Text>                    
+                </View>
+
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('preparingOrderScreen')}
+                className='rounded-lg bg-green-400 p-4'>
+                    <Text className='text-center text-white text-xl font-bold'>Place Order</Text>
+                </TouchableOpacity>
             </View>
         </View>
     </SafeAreaView>
